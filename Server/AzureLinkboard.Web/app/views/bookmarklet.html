@@ -1,0 +1,26 @@
+﻿<form class="form-horizontal" name="linkform">
+    <div class="form-group" ng-class="{'has-error': linkform.url.$invalid}">
+        <label for="url" class="control-label col-md-2">Url</label>
+        <div class="col-md-10">
+            <input type="url" name="url" class="form-control" ng-model="newLink.Url" required autofocus maxlength="512" />
+        </div>
+    </div>
+    <div class="form-group" ng-class="{'has-error': linkform.title.$invalid}">
+        <label for="title" class="control-label col-md-2">Title</label>
+        <div class="col-md-10">
+            <input type="text" name="title" class="form-control" ng-model="newLink.Title" required maxlength="256" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="description" class="control-label col-md-2">Description</label>
+        <div class="col-md-10">
+            <textarea class="form-control" rows="5" id="description" ng-model="newLink.Description" maxlength="1024"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="tags" class="control-label col-md-2">Tags</label>
+        <div class="col-md-10">
+            <input type="text" id="tags" class="form-control" ng-model="newLink.Tags" placeholder="Space separated tag list" />
+        </div>
+    </div>
+</form>

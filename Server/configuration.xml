@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<application-configuration>
+  <!-- The system section contains your infrastructure configuration information and your deployment specifc secrets -->
+  <!-- To deploy the application yourself this is the section you will need to update with your own keys and passwords -->
+  <infrastructure>
+    <storage-account>
+      <fqn>com.azurelinkboard.storage</fqn>
+      <connection-string>{{storage-connection-string}}</connection-string>
+      <cors-rule>
+        <allowed-origins>https://localhost:44300/,https://azurelinkboardweb.azurewebsites.net/</allowed-origins>
+        <allowed-methods>POST,PUT,GET</allowed-methods>
+        <allowed-headers>x-ms-meta-data*,x-ms-meta-target*,x-ms-meta-abc</allowed-headers>
+        <exposed-headers>x-ms-meta-*</exposed-headers>
+        <max-age-seconds>200</max-age-seconds>
+      </cors-rule>
+    </storage-account>
+    <storage-account>
+      <fqn>com.accidental-fish.application-support.storage</fqn>
+      <connection-string>{{storage-connection-string}}</connection-string>
+    </storage-account>
+  </infrastructure>
+
+  <component fqn="com.accidentalfish.azurelinkboard.usermanagement">
+    <storage-account>com.azurelinkboard.storage</storage-account>
+  </component>
+  <component fqn="com.accidentalfish.azurelinkboard.urlstore">
+    <storage-account>com.azurelinkboard.storage</storage-account>
+    <default-table-name>savedurls</default-table-name>
+    <default-queue-name>savedurlqueue</default-queue-name>
+    <settings>
+      <date-ordered-tablename resource-type="table">dateorderedsavedurls</date-ordered-tablename>
+      <poison-queuename resource-type="queue">poisonurlqueue</poison-queuename>
+    </settings>
+  </component>
+  <component fqn="com.accidentalfish.azurelinkboard.tag">
+    <storage-account>com.azurelinkboard.storage</storage-account>
+    <default-table-name>usertags</default-table-name>
+    <settings>
+      <dateordered-tag-items-tablename resource-type="table">dateorderedusertagitems</dateordered-tag-items-tablename>
+      <unique-tag-items-tablename resource-type="table">uniqueusertagitems</unique-tag-items-tablename>
+    </settings>
+  </component>
+  
+  <!-- these components are application support components -->
+  <component fqn="com.accidental-fish.application-support">
+    <storage-account>com.accidental-fish.application-support.storage</storage-account>
+    <settings>
+      <logger-queue resource-type="queue">logger</logger-queue>
+      <realtime-settings-table resource-type="table">realtimesettings</realtime-settings-table>
+    </settings>
+  </component>
+  <component fqn="com.accidental-fish.email">
+    <storage-account>com.accidental-fish.application-support.storage</storage-account>
+    <default-queue-name>email</default-queue-name>
+    <default-blob-container-name>emailtemplates</default-blob-container-name>
+    <settings>
+      <email-poison-queue resource-type="queue">poisonemail</email-poison-queue>
+    </settings>
+  </component>
+  <component fqn="com.accidentalfish.log-queue-processor">
+    <storage-account>com.accidental-fish.application-support.storage</storage-account>
+    <settings>
+      <logger-queue resource-type="queue">logger</logger-queue>
+      <logger-bydate-table resource-type="table">logbydate</logger-bydate-table>
+      <logger-bydate-desc-table resource-type="table">logbydatedesc</logger-bydate-desc-table>
+      <logger-byseverity-table resource-type="table">logbyseverity</logger-byseverity-table>
+      <logger-bysource-table resource-type="table">logbysource</logger-bysource-table>
+      <realtime-settings-table resource-type="table">realtimesettings</realtime-settings-table>
+    </settings>
+  </component>
+  <component fqn="com.accidentalfish.alert-sender">
+    <storage-account>com.accidental-fish.application-support.storage</storage-account>
+    <default-table-name>alertsubscribers</default-table-name>
+    <settings>
+      <alert-from>{{alert-source-email-address}}</alert-from>
+    </settings>
+  </component>
+  <component fqn="com.accidentalfish.sendgrid">
+    <settings>
+      <username>{{sendgrid-username}}</username>
+      <password>{{sendgrid-password}}</password>
+    </settings>
+  </component>
+</application-configuration>

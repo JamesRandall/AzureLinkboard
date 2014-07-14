@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<settings>
+  <setting key="storage-connection-string">UseDevelopmentStorage=true;</setting>
+  <setting key="sendgrid-username">your sendgrid username - unused in azurelinkboard</setting>
+  <setting key="sendgrid-password">your sendgrid password - unused in azurelinkboard</setting>
+  <setting key="alert-source-email-address">your email reply appress - unused in azurelinkboard</setting>
+</settings>

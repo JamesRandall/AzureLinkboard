@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="AzureLinkboard.Infrastructure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2014-01.2.3">
+  <Role name="AzureLinkboard.Infrastructure.Background">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true;" />
+      <Setting name="com.accidentalfish.azurelinkboard.usermanagement.storage-account-connection-string" value="UseDevelopmentStorage=true;" />
+      <Setting name="com.accidentalfish.azurelinkboard.urlstore.storage-account-connection-string" value="UseDevelopmentStorage=true;" />
+      <Setting name="com.accidentalfish.azurelinkboard.urlstore.default-queue-name" value="savedurlqueue" />
+      <Setting name="com.accidentalfish.azurelinkboard.urlstore.default-table-name" value="savedurls" />
+      <Setting name="com.accidentalfish.azurelinkboard.urlstore.setting.date-ordered-tablename" value="dateorderedsavedurls" />
+      <Setting name="com.accidentalfish.azurelinkboard.urlstore.setting.poison-queuename" value="poisonurlqueue" />
+      <Setting name="com.accidentalfish.azurelinkboard.tag.storage-account-connection-string" value="UseDevelopmentStorage=true;" />
+      <Setting name="com.accidentalfish.azurelinkboard.tag.default-table-name" value="usertags" />
+      <Setting name="com.accidentalfish.azurelinkboard.tag.setting.dateordered-tag-items-tablename" value="dateorderedusertagitems" />
+      <Setting name="com.accidentalfish.azurelinkboard.tag.setting.unique-tag-items-tablename" value="uniqueusertagitems" />
+      <Setting name="com.accidental-fish.application-support.storage-account-connection-string" value="UseDevelopmentStorage=true;" />
+      <Setting name="com.accidental-fish.application-support.setting.logger-queue" value="logger" />
+      <Setting name="com.accidental-fish.application-support.setting.realtime-settings-table" value="realtimesettings" />
+      <Setting name="com.accidental-fish.email.storage-account-connection-string" value="UseDevelopmentStorage=true;" />
+      <Setting name="com.accidental-fish.email.default-queue-name" value="email" />
+      <Setting name="com.accidental-fish.email.default-blob-container-name" value="emailtemplates" />
+      <Setting name="com.accidental-fish.email.setting.email-poison-queue" value="poisonemail" />
+      <Setting name="com.accidentalfish.log-queue-processor.storage-account-connection-string" value="UseDevelopmentStorage=true;" />
+      <Setting name="com.accidentalfish.log-queue-processor.setting.logger-queue" value="logger" />
+      <Setting name="com.accidentalfish.log-queue-processor.setting.logger-bydate-table" value="logbydate" />
+      <Setting name="com.accidentalfish.log-queue-processor.setting.logger-bydate-desc-table" value="logbydatedesc" />
+      <Setting name="com.accidentalfish.log-queue-processor.setting.logger-byseverity-table" value="logbyseverity" />
+      <Setting name="com.accidentalfish.log-queue-processor.setting.logger-bysource-table" value="logbysource" />
+      <Setting name="com.accidentalfish.log-queue-processor.setting.realtime-settings-table" value="realtimesettings" />
+      <Setting name="com.accidentalfish.alert-sender.storage-account-connection-string" value="UseDevelopmentStorage=true;" />
+      <Setting name="com.accidentalfish.alert-sender.default-table-name" value="alertsubscribers" />
+      <Setting name="com.accidentalfish.alert-sender.setting.alert-from" value="your email reply appress - unused in azurelinkboard" />
+      <Setting name="com.accidentalfish.sendgrid.setting.username" value="your sendgrid username - unused in azurelinkboard" />
+      <Setting name="com.accidentalfish.sendgrid.setting.password" value="your sendgrid password - unused in azurelinkboard" />
+    </ConfigurationSettings>
+  </Role>
+</ServiceConfiguration>

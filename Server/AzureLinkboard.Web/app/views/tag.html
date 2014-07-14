@@ -1,0 +1,18 @@
+﻿<div infinite-scroll="nextPage()" infinite-scroll-distance="0">
+    <div ng-repeat="link in links" class="panel panel-default" style="margin-top: 1em;">
+        <div class="panel-heading" style="font-weight:bold;"><a ng-href="link.Url">{{link.Title}}</a></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2">Url</div>
+                <div class="col-md-10"><a ng-href="link.Url">{{link.Url}}</a></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">Description</div>
+                <div class="col-md-10"><p>{{link.Description}}</p></div>
+            </div>
+        </div>
+        <ul class="nav nav-pills">
+            <li ng-repeat="tag in link.Tags" ng-class="{true:'active', false:'boo'}[tag.IsSelected == true]"><a href="#/tag/{{tag.Tag}}">{{tag.Tag}}</a></li>
+        </ul>
+    </div>
+</div>

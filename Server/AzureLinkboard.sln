@@ -1,0 +1,91 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{1F67B02F-C905-4256-B66D-0126097BA337}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\AzureWebsitePublishModule.psm1 = PublishScripts\AzureWebsitePublishModule.psm1
+		PublishScripts\Publish-WebApplicationWebsite.ps1 = PublishScripts\Publish-WebApplicationWebsite.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{A778A7B9-33B0-4F5C-A8EF-B9E6791C81C8}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Configurations\AzureLinkboardWeb-WAWS-dev-2.json = PublishScripts\Configurations\AzureLinkboardWeb-WAWS-dev-2.json
+		PublishScripts\Configurations\AzureLinkboardWeb-WAWS-dev.json = PublishScripts\Configurations\AzureLinkboardWeb-WAWS-dev.json
+		PublishScripts\Configurations\AzureLinkboardWebApi-WAWS-dev-2.json = PublishScripts\Configurations\AzureLinkboardWebApi-WAWS-dev-2.json
+		PublishScripts\Configurations\AzureLinkboardWebApi-WAWS-dev.json = PublishScripts\Configurations\AzureLinkboardWebApi-WAWS-dev.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{CA5E45B7-A1EC-4E6C-B3F1-643F0FE8AE49}"
+	ProjectSection(SolutionItems) = preProject
+		build-tools.ps1 = build-tools.ps1
+		configuration.xml = configuration.xml
+		configure-dev.ps1 = configure-dev.ps1
+		configure-opensource.ps1 = configure-opensource.ps1
+		configure.ps1 = configure.ps1
+		settings-dev.xml = settings-dev.xml
+		settings-opensource.xml = settings-opensource.xml
+		teardown.ps1 = teardown.ps1
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureLinkboard.Storage", "AzureLinkboard.Storage\AzureLinkboard.Storage.csproj", "{8A4CCBA2-4904-4AC3-9022-C708819FFFBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureLinkboard.Api.Model", "AzureLinkboard.Api.Model\AzureLinkboard.Api.Model.csproj", "{2829730E-C087-47F8-9820-91981DF462C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureLinkboard.Domain", "AzureLinkboard.Domain\AzureLinkboard.Domain.csproj", "{16FB5E49-F1CA-4304-9A1F-BE7FF8C89586}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureLinkboard.Web.Api", "AzureLinkboard.Web.Api\AzureLinkboard.Web.Api.csproj", "{1B87979D-66AF-42AD-81A5-BD5BB17F19A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureLinkboard.Web", "AzureLinkboard.Web\AzureLinkboard.Web.csproj", "{E664B7B8-F7E7-465D-98ED-F1E0E45B0113}"
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "AzureLinkboard.Infrastructure", "AzureLinkboard.Infrastructure\AzureLinkboard.Infrastructure.ccproj", "{A3FD60C9-556E-422E-94DB-B8E452F182F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureLinkboard.Infrastructure.Background", "AzureLinkboard.Infrastructure.Background\AzureLinkboard.Infrastructure.Background.csproj", "{81CEAC5E-2135-4BA4-8994-2584CF24A8EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A4CCBA2-4904-4AC3-9022-C708819FFFBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A4CCBA2-4904-4AC3-9022-C708819FFFBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A4CCBA2-4904-4AC3-9022-C708819FFFBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A4CCBA2-4904-4AC3-9022-C708819FFFBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2829730E-C087-47F8-9820-91981DF462C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2829730E-C087-47F8-9820-91981DF462C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2829730E-C087-47F8-9820-91981DF462C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2829730E-C087-47F8-9820-91981DF462C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16FB5E49-F1CA-4304-9A1F-BE7FF8C89586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16FB5E49-F1CA-4304-9A1F-BE7FF8C89586}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16FB5E49-F1CA-4304-9A1F-BE7FF8C89586}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16FB5E49-F1CA-4304-9A1F-BE7FF8C89586}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B87979D-66AF-42AD-81A5-BD5BB17F19A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B87979D-66AF-42AD-81A5-BD5BB17F19A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B87979D-66AF-42AD-81A5-BD5BB17F19A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B87979D-66AF-42AD-81A5-BD5BB17F19A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E664B7B8-F7E7-465D-98ED-F1E0E45B0113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E664B7B8-F7E7-465D-98ED-F1E0E45B0113}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E664B7B8-F7E7-465D-98ED-F1E0E45B0113}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E664B7B8-F7E7-465D-98ED-F1E0E45B0113}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3FD60C9-556E-422E-94DB-B8E452F182F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3FD60C9-556E-422E-94DB-B8E452F182F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3FD60C9-556E-422E-94DB-B8E452F182F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3FD60C9-556E-422E-94DB-B8E452F182F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81CEAC5E-2135-4BA4-8994-2584CF24A8EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81CEAC5E-2135-4BA4-8994-2584CF24A8EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81CEAC5E-2135-4BA4-8994-2584CF24A8EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81CEAC5E-2135-4BA4-8994-2584CF24A8EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A778A7B9-33B0-4F5C-A8EF-B9E6791C81C8} = {1F67B02F-C905-4256-B66D-0126097BA337}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\TransientFaultHandling.Core.5.1.1209.1\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.1.1212.0\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.1.1212.0\DesignTime
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45
+	EndGlobalSection
+EndGlobal

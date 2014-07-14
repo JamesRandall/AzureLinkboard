@@ -1,0 +1,31 @@
+﻿<div class="row" style="margin-top: 1em;" ng-hide="savedLinks.length > 0 || !dataLoaded">
+    <div class="panel panel-info">
+        <div class="panel-heading">Welcome to Azure Linkboard</div>
+        <div class="panel-body">
+            <p>
+                Once you've added some bookmarks your saved links will appear here. Get started by clicking Add Link above or by
+                dragging the button below to your bookmark bar to create a button that you can click from any web page to save it to your bookmark list.
+            </p>
+            <a ng-href="{{bookmarklet}}" class="btn btn-default">Save Bookmark</a>
+        </div>
+    </div>
+</div>
+
+<div infinite-scroll="nextPage()" infinite-scroll-distance="2" infinite-scroll-disabled="apibusy">
+    <div ng-repeat="savedLink in savedLinks" class="panel panel-default" style="margin-top: 1em;">
+        <div class="panel-heading" style="font-weight:bold;"><a href="{{savedLink.Url}}">{{savedLink.Title}}</a></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2">Url</div>
+                <div class="col-md-10"><a href="{{savedLink.Url}}">{{savedLink.Url}}</a></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">Description</div>
+                <div class="col-md-10"><p>{{savedLink.Description}}</p></div>
+            </div>
+        </div>
+        <ul class="nav nav-pills">
+            <li ng-repeat="tag in savedLink.Tags"><a href="#/tag/{{tag}}">{{tag}}</a></li>
+        </ul>
+    </div>
+</div>
