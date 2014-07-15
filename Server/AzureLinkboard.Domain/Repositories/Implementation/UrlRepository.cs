@@ -12,14 +12,24 @@ namespace AzureLinkboard.Domain.Repositories.Implementation
 {
     internal class UrlRepository : IUrlRepository
     {
+        private readonly INoSqlConcurrencyManager _concurrencyManager;
         private readonly IAsynchronousNoSqlRepository<SavedUrl> _table;
         private readonly IAsynchronousNoSqlRepository<DateOrderedUrl> _dateOrderIndexTable;
+        private readonly IAsynchronousNoSqlRepository<UrlStatistics> _statisticsTable;
+        private readonly IAsynchronousNoSqlRepository<UrlUser> _urlUserTable;
 
-        public UrlRepository(IApplicationResourceFactory applicationResourceFactory)
+        public UrlRepository(IApplicationResourceFactory applicationResourceFactory,
+            INoSqlConcurrencyManager concurrencyManager)
         {
+            _concurrencyManager = concurrencyManager;
             string dateOrderedTableName = applicationResourceFactory.Setting(ComponentIdentities.UrlStore, "date-ordered-tablename");
+            string statisticsTableName = applicationResourceFactory.Setting(ComponentIdentities.UrlStore, "statistics-tablename");
+            string urlUsersTableName = applicationResourceFactory.Setting(ComponentIdentities.UrlStore, "url-users-tablename");
+
             _table = applicationResourceFactory.GetNoSqlRepository<SavedUrl>(ComponentIdentities.UrlStore);
             _dateOrderIndexTable = applicationResourceFactory.GetNoSqlRepository<DateOrderedUrl>(dateOrderedTableName, ComponentIdentities.UrlStore);
+            _statisticsTable = applicationResourceFactory.GetNoSqlRepository<UrlStatistics>(statisticsTableName, ComponentIdentities.UrlStore);
+            _urlUserTable = applicationResourceFactory.GetNoSqlRepository<UrlUser>(urlUsersTableName, ComponentIdentities.UrlStore);
         }
 
         public IAsynchronousNoSqlRepository<SavedUrl> Table { get { return _table; } }
@@ -34,6 +44,16 @@ namespace AzureLinkboard.Domain.Repositories.Implementation
         public Task Save(DateOrderedUrl url)
         {
             return _dateOrderIndexTable.InsertAsync(url);
+        }
+
+        public Task Save(UrlStatistics statistics)
+        {
+            return _statisticsTable.InsertAsync(statistics);
+        }
+
+        public Task Save(UrlUser urlUser)
+        {
+            return _urlUserTable.InsertOrReplaceAsync(urlUser);
         }
 
         public async Task<PagedResultSegment<DateOrderedUrl>> GetDateOrderIndexesForUser(string userId, int pageSize, string continuationToken)
@@ -61,6 +81,19 @@ namespace AzureLinkboard.Domain.Repositories.Implementation
             string filter = TableQuery.CombineFilters(partitionFilter, TableOperators.And, rowFilter);
 
             return await _table.PagedQueryAsync(filter, rowFilters.Count, null);
+        }
+
+        public async Task<int> IncrementNumberOfSaves(string url)
+        {
+            UrlStatistics statistics = await _concurrencyManager.Update(_statisticsTable, url.Base64Encode(), "", s =>
+            {
+                s.NumberOfSaves++;
+            });
+            if (statistics == null)
+            {
+                return -1;
+            }
+            return statistics.NumberOfSaves;
         }
     }
 }

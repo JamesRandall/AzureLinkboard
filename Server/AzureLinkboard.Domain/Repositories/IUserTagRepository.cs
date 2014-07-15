@@ -10,5 +10,6 @@ namespace AzureLinkboard.Domain.Repositories
         Task Save(DateOrderedUserTagItem dateOrderedUserTagItem);
         Task Save(UniqueUserTagItem uniqueUserTagItem);
         Task<PagedResultSegment<DateOrderedUserTagItem>> GetForUserAndTag(string userId, string tag, int pageSize, string continuationToken);
+        Task IncrementTagItemCount(string userId, string tag);
     }
 }

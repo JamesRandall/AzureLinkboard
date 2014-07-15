@@ -9,16 +9,16 @@ namespace AzureLinkboard.Web.Api.Controllers
     [Authorize]
     public class TagController : ApiController
     {
-        private readonly ITagService _tagService;
+        private readonly IUserTagService _userTagService;
 
-        public TagController(ITagService tagService)
+        public TagController(IUserTagService userTagService)
         {
-            _tagService = tagService;
+            _userTagService = userTagService;
         }
 
         public async Task<Page<SavedUrl>> Get(string id, int pageSize = 20, string continuationToken = null)
         {
-            return await _tagService.GetTagItems(User.Identity.GetUserId(), id, pageSize, continuationToken);
+            return await _userTagService.GetTagItems(User.Identity.GetUserId(), id, pageSize, continuationToken);
         }
     }
 }

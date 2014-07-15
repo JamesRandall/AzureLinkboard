@@ -23,10 +23,11 @@ namespace AzureLinkboard.Domain
             // Repositories
             unityContainer.RegisterType<IUrlRepository, UrlRepository>();
             unityContainer.RegisterType<IUserTagRepository, UserTagRepository>();
+            unityContainer.RegisterType<IUrlStatisticsService, UrlStatisticsService>();
 
             // Services
             unityContainer.RegisterType<IUrlService, UrlService>();
-            unityContainer.RegisterType<ITagService, TagService>();
+            unityContainer.RegisterType<IUserTagService, UserTagService>();
         }
 
         public static void RegisterInfrastructure(IUnityContainer unityContainer)

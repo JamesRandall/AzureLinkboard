@@ -9,5 +9,7 @@ namespace AzureLinkboard.Domain.Services
         Task<ValidationResult<SavedUrl>> Save(string userId, SaveUrlRequest model);
 
         Task<Page<SavedUrl>> Get(string userId, int pageSize, string continuationToken = null);
+
+        Task CreateIndexOfUserForUrl(string url, string userId);
     }
 }

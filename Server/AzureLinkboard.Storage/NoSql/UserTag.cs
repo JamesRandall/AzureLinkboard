@@ -22,6 +22,8 @@ namespace AzureLinkboard.Storage.NoSql
 
         [IgnoreProperty]
         public string Tag { get { return RowKey.Base64Decode(); } }
+
+        public int NumberOfItems { get; set; }
     }
 
 }

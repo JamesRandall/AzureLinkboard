@@ -15,7 +15,7 @@ using SavedUrl = AzureLinkboard.Storage.NoSql.SavedUrl;
 namespace AzureLinkboard.Domain.Services.Implementation
 {
     [ComponentIdentity(ComponentIdentities.TagFqn)]
-    internal class TagService : AbstractApplicationComponent, ITagService
+    internal class UserTagService : AbstractApplicationComponent, IUserTagService
     {
         private readonly ITagParser _tagParser;
         private readonly IMapperFactory _mapperFactory;
@@ -23,7 +23,7 @@ namespace AzureLinkboard.Domain.Services.Implementation
         private readonly IUserTagRepository _userTagRepository;
 
 
-        public TagService(
+        public UserTagService(
             ITagParser tagParser,
             IMapperFactory mapperFactory,
             IUrlRepository urlRepository,
@@ -41,10 +41,22 @@ namespace AzureLinkboard.Domain.Services.Implementation
             foreach (string tagString in tags)
             {
                 bool exists = false;
-                UserTag tag = new UserTag(userId, tagString);
+                bool needsIncrement = false;
+                UserTag tag = new UserTag(userId, tagString)
+                {
+                    NumberOfItems = 1
+                };
                 DateOrderedUserTagItem dateOrderedTagItem = new DateOrderedUserTagItem(userId, tagString, url, savedAt);
                 UniqueUserTagItem uniqueTagItem = new UniqueUserTagItem(userId, tagString, url, savedAt);
-                await _userTagRepository.Save(tag);
+                try
+                {
+                    await _userTagRepository.Save(tag);
+                }
+                catch (UniqueKeyViolation)
+                {
+                    needsIncrement = true;
+                }
+                
                 try
                 {
                     await _userTagRepository.Save(uniqueTagItem);
@@ -53,10 +65,18 @@ namespace AzureLinkboard.Domain.Services.Implementation
                 {
                     exists = true;
                 }
+
+                List<Task> tasks = new List<Task>();
                 if (!exists)
                 {
-                    await _userTagRepository.Save(dateOrderedTagItem);
+                    tasks.Add(_userTagRepository.Save(dateOrderedTagItem));
                 }
+                if (needsIncrement)
+                {
+                    tasks.Add(_userTagRepository.IncrementTagItemCount(userId, tagString));
+                }
+
+                await Task.WhenAll(tasks);
             }
         }
 

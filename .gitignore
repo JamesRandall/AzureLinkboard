@@ -113,3 +113,5 @@ UpgradeLog*.XML
 Server/AzureLinkboard.Web/Properties/PublishProfiles/AzureLinkboardWeb.pubxml
 Server/AzureLinkboard.Web/Properties/PublishProfiles/AzureLinkboardWeb.pubxml
 *.pubxml
+*.azurePubxml
+

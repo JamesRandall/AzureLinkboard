@@ -34,6 +34,7 @@
       <Setting name="com.accidentalfish.sendgrid.setting.username" value="your sendgrid username - unused in azurelinkboard" />
       <Setting name="com.accidentalfish.sendgrid.setting.password" value="your sendgrid password - unused in azurelinkboard" />
       <Setting name="com.accidentalfish.azurelinkboard.urlstore.setting.url-users-tablename" value="urlusers" />
+      <Setting name="com.accidentalfish.azurelinkboard.urlstore.setting.statistics-tablename" value="urlstatistics" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

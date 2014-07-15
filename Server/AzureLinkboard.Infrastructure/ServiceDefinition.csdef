@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceDefinition name="AzureLinkboard.Infrastructure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2014-01.2.3">
-  <WorkerRole name="AzureLinkboard.Infrastructure.Background" vmsize="Small">
+  <WorkerRole name="AzureLinkboard.Infrastructure.Background" vmsize="ExtraSmall">
     <Imports>
       <Import moduleName="Diagnostics" />
     </Imports>
@@ -35,6 +35,7 @@
       <Setting name="com.accidentalfish.sendgrid.setting.username" />
       <Setting name="com.accidentalfish.sendgrid.setting.password" />
       <Setting name="com.accidentalfish.azurelinkboard.urlstore.setting.url-users-tablename" />
+      <Setting name="com.accidentalfish.azurelinkboard.urlstore.setting.statistics-tablename" />
     </ConfigurationSettings>
   </WorkerRole>
 </ServiceDefinition>

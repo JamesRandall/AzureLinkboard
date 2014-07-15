@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AccidentalFish.ApplicationSupport.Core.Components;
+using AccidentalFish.ApplicationSupport.Core.Extensions;
 using AccidentalFish.ApplicationSupport.Core.NoSql;
 using AzureLinkboard.Storage.NoSql;
 
@@ -11,12 +12,15 @@ namespace AzureLinkboard.Domain.Repositories.Implementation
 {
     internal class UserTagRepository : IUserTagRepository
     {
+        private readonly INoSqlConcurrencyManager _concurrencyManager;
         private readonly IAsynchronousNoSqlRepository<UserTag> _userTagsTable;
         private readonly IAsynchronousNoSqlRepository<DateOrderedUserTagItem> _dateOrderedUserTagItemsTable;
         private readonly IAsynchronousNoSqlRepository<UniqueUserTagItem> _uniqueUserTagItemsTable;
 
-        public UserTagRepository(IApplicationResourceFactory applicationResourceFactory)
+        public UserTagRepository(IApplicationResourceFactory applicationResourceFactory,
+            INoSqlConcurrencyManager concurrencyManager)
         {
+            _concurrencyManager = concurrencyManager;
             string dateOrderedTagItemsTableName = applicationResourceFactory.Setting(ComponentIdentities.Tag, "dateordered-tag-items-tablename");
             string uniqueTagItemsTableName = applicationResourceFactory.Setting(ComponentIdentities.Tag, "unique-tag-items-tablename");
             _userTagsTable = applicationResourceFactory.GetNoSqlRepository<UserTag>(ComponentIdentities.Tag);
@@ -26,7 +30,7 @@ namespace AzureLinkboard.Domain.Repositories.Implementation
 
         public async Task Save(UserTag userTag)
         {
-            await _userTagsTable.InsertOrReplaceAsync(userTag);
+            await _userTagsTable.InsertAsync(userTag);
         }
 
         public async Task Save(DateOrderedUserTagItem dateOrderedUserTagItem)
@@ -50,6 +54,14 @@ namespace AzureLinkboard.Domain.Repositories.Implementation
                         }, pageSize,
                         continuationToken);
             return segment;
+        }
+
+        public async Task IncrementTagItemCount(string userId, string tag)
+        {
+            await _concurrencyManager.Update(_userTagsTable, userId, tag.Base64Encode(), ut =>
+            {
+                ut.NumberOfItems++;
+            });
         }
     }
 }

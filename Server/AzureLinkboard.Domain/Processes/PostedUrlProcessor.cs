@@ -19,7 +19,9 @@ namespace AzureLinkboard.Domain.Processes
         private const int MaxDequeues = 5;
 
         private readonly IAsynchronousBackoffPolicy _backoffPolicy;
-        private readonly ITagService _tagService;
+        private readonly IUrlService _urlService;
+        private readonly IUserTagService _userTagService;
+        private readonly IUrlStatisticsService _urlStatisticsService;
         private readonly IAsynchronousQueue<SavedUrlQueueItem> _queue;
         private readonly IAsynchronousQueue<SavedUrlQueueItem> _poisonQueue;
         private readonly IAsynchronousNoSqlRepository<SavedUrl> _savedUrlTable; 
@@ -29,11 +31,15 @@ namespace AzureLinkboard.Domain.Processes
         public PostedUrlProcessor(IApplicationResourceFactory applicationResourceFactory,
             ILoggerFactory loggerFactory,
             IAsynchronousBackoffPolicy backoffPolicy,
-            ITagService tagService)
+            IUrlService urlService,
+            IUserTagService userTagService,
+            IUrlStatisticsService urlStatisticsService)
         {
             string poisonQueueName = applicationResourceFactory.Setting(ComponentIdentities.UrlStore, "poison-queuename");
             _backoffPolicy = backoffPolicy;
-            _tagService = tagService;
+            _urlService = urlService;
+            _userTagService = userTagService;
+            _urlStatisticsService = urlStatisticsService;
             _queue = applicationResourceFactory.GetQueue<SavedUrlQueueItem>(ComponentIdentities.UrlStore);
             _poisonQueue = applicationResourceFactory.GetQueue<SavedUrlQueueItem>(poisonQueueName, ComponentIdentities.UrlStore);
             _logger = loggerFactory.CreateLongLivedLogger(ComponentIdentity);
@@ -75,7 +81,12 @@ namespace AzureLinkboard.Domain.Processes
                 SavedUrl savedUrl = await _savedUrlTable.GetAsync(item.UserId, item.Url.Base64Encode());
                 if (savedUrl != null)
                 {
-                    await _tagService.ProcessTags(savedUrl.UserId, savedUrl.Url, savedUrl.SavedAt, savedUrl.Tags);
+                    await Task.WhenAll(new[]
+                    {
+                        _userTagService.ProcessTags(savedUrl.UserId, savedUrl.Url, savedUrl.SavedAt, savedUrl.Tags),
+                        _urlStatisticsService.IncrementNumberOfSaves(savedUrl.Url),
+                        _urlService.CreateIndexOfUserForUrl(savedUrl.Url, item.UserId)
+                    });
                 }
                 else
                 {

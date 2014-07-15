@@ -59,6 +59,12 @@ namespace AzureLinkboard.Domain.Services.Implementation
             };
         }
 
+        public async Task CreateIndexOfUserForUrl(string url, string userId)
+        {
+            UrlUser indexItem = new UrlUser(url, userId);
+            await _urlRepository.Save(indexItem);
+        }
+
         public async Task<ValidationResult<SavedUrl>> Save(string userId, SaveUrlRequest model)
         {
             NoSqlSavedUrl savedUrl = new NoSqlSavedUrl(userId, model.Url)
@@ -86,13 +92,13 @@ namespace AzureLinkboard.Domain.Services.Implementation
                 result.AddError("Link already exists");
                 return result;
             }
-            
+
             await Task.WhenAll(new[]
             {
                 _urlRepository.Save(new DateOrderedUrl(userId, savedUrl.SavedAt, savedUrl.Url)),
                 _queue.EnqueueAsync(queueItem)
             });
-
+            
             return new ValidationResult<SavedUrl>(_mapperFactory.GetSavedUrlMapper().Map(savedUrl));
         }
     }

@@ -14,7 +14,10 @@ namespace AzureLinkboard.Domain.Repositories
         IAsynchronousNoSqlRepository<DateOrderedUrl> DateOrderIndexTable { get; }
         Task Save(SavedUrl url);
         Task Save(DateOrderedUrl url);
+        Task Save(UrlStatistics statistics);
+        Task Save(UrlUser urlUser);
         Task<PagedResultSegment<DateOrderedUrl>> GetDateOrderIndexesForUser(string userId, int pageSize, string continuationToken);
         Task<PagedResultSegment<SavedUrl>> GetByUrls(string userId, IEnumerable<string> urls);
+        Task<int> IncrementNumberOfSaves(string url);
     }
 }

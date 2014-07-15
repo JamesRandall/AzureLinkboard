@@ -139,9 +139,11 @@
     <Compile Include="Repositories\Implementation\UrlRepository.cs" />
     <Compile Include="Repositories\IUserTagRepository.cs" />
     <Compile Include="Repositories\IUrlRepository.cs" />
-    <Compile Include="Services\Implementation\TagService.cs" />
+    <Compile Include="Services\Implementation\UrlStatisticsService.cs" />
+    <Compile Include="Services\Implementation\UserTagService.cs" />
     <Compile Include="Services\Implementation\UrlService.cs" />
-    <Compile Include="Services\ITagService.cs" />
+    <Compile Include="Services\IUrlStatisticsService.cs" />
+    <Compile Include="Services\IUserTagService.cs" />
     <Compile Include="Services\IUrlService.cs" />
     <Compile Include="Validation\ValidationError.cs" />
     <Compile Include="Validation\ValidationResult.cs" />

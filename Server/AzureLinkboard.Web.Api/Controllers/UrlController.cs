@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AzureLinkboard.Api.Model;
 using AzureLinkboard.Domain.Services;
 using AzureLinkboard.Domain.Validation;
-using AzureLinkboard.Web.Extensions;
+using AzureLinkboard.Web.Api.Extensions;
 using Microsoft.AspNet.Identity;
 
 namespace AzureLinkboard.Web.Api.Controllers

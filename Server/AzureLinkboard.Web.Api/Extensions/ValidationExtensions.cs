@@ -2,7 +2,7 @@
 using System.Web.Http.ModelBinding;
 using AzureLinkboard.Domain.Validation;
 
-namespace AzureLinkboard.Web.Extensions
+namespace AzureLinkboard.Web.Api.Extensions
 {
     public static class ValidationExtensions
     {
@@ -10,7 +10,7 @@ namespace AzureLinkboard.Web.Extensions
         {
             foreach (ValidationError error in errors)
             {
-                modelState.AddModelError(error.Key, error.Message);
+                modelState.AddModelError(error.Key ?? "", error.Message);
             }
         }
 
