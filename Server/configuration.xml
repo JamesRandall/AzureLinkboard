@@ -30,6 +30,7 @@
     <settings>
       <date-ordered-tablename resource-type="table">dateorderedsavedurls</date-ordered-tablename>
       <poison-queuename resource-type="queue">poisonurlqueue</poison-queuename>
+      <url-users-tablename resource-type="table">urlusers</url-users-tablename>
     </settings>
   </component>
   <component fqn="com.accidentalfish.azurelinkboard.tag">

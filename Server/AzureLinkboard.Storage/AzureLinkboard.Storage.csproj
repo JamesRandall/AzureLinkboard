@@ -125,8 +125,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NoSql\DateOrderedUrl.cs" />
+    <Compile Include="NoSql\DomainStatistics.cs" />
     <Compile Include="NoSql\SavedUrl.cs" />
     <Compile Include="NoSql\UniqueUserTagItem.cs" />
+    <Compile Include="NoSql\UrlStatistics.cs" />
+    <Compile Include="NoSql\UrlTagItem.cs" />
+    <Compile Include="NoSql\UrlUser.cs" />
     <Compile Include="NoSql\UserTag.cs" />
     <Compile Include="NoSql\DateOrderedUserTagItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

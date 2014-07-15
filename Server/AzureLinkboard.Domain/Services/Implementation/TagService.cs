@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AccidentalFish.ApplicationSupport.Core.Components;
 using AccidentalFish.ApplicationSupport.Core.Extensions;
@@ -9,8 +8,8 @@ using AccidentalFish.ApplicationSupport.Core.NoSql;
 using AzureLinkboard.Api.Model;
 using AzureLinkboard.Domain.Helpers;
 using AzureLinkboard.Domain.Mappers;
+using AzureLinkboard.Domain.Repositories;
 using AzureLinkboard.Storage.NoSql;
-using Microsoft.WindowsAzure.Storage.Table;
 using SavedUrl = AzureLinkboard.Storage.NoSql.SavedUrl;
 
 namespace AzureLinkboard.Domain.Services.Implementation
@@ -20,24 +19,20 @@ namespace AzureLinkboard.Domain.Services.Implementation
     {
         private readonly ITagParser _tagParser;
         private readonly IMapperFactory _mapperFactory;
-        private readonly IAsynchronousNoSqlRepository<UserTag> _userTagsTable;
-        private readonly IAsynchronousNoSqlRepository<DateOrderedUserTagItem> _dateOrderedUserTagItemsTable;
-        private readonly IAsynchronousNoSqlRepository<UniqueUserTagItem> _uniqueUserTagItemsTable;
-        private readonly IAsynchronousNoSqlRepository<SavedUrl> _repository; 
+        private readonly IUrlRepository _urlRepository;
+        private readonly IUserTagRepository _userTagRepository;
+
 
         public TagService(
-            IApplicationResourceFactory applicationResourceFactory,
             ITagParser tagParser,
-            IMapperFactory mapperFactory)
+            IMapperFactory mapperFactory,
+            IUrlRepository urlRepository,
+            IUserTagRepository userTagRepository)
         {
             _tagParser = tagParser;
             _mapperFactory = mapperFactory;
-            string dateOrderedTagItemsTableName = applicationResourceFactory.Setting(ComponentIdentity, "dateordered-tag-items-tablename");
-            string uniqueTagItemsTableName = applicationResourceFactory.Setting(ComponentIdentity, "unique-tag-items-tablename");
-            _userTagsTable = applicationResourceFactory.GetNoSqlRepository<UserTag>(ComponentIdentity);
-            _dateOrderedUserTagItemsTable = applicationResourceFactory.GetNoSqlRepository<DateOrderedUserTagItem>(dateOrderedTagItemsTableName, ComponentIdentity);
-            _uniqueUserTagItemsTable = applicationResourceFactory.GetNoSqlRepository<UniqueUserTagItem>(uniqueTagItemsTableName, ComponentIdentity);
-            _repository = applicationResourceFactory.GetNoSqlRepository<SavedUrl>(ComponentIdentities.UrlStore);
+            _urlRepository = urlRepository;
+            _userTagRepository = userTagRepository;
         }
 
         public async Task ProcessTags(string userId, string url, DateTimeOffset savedAt, string tagsString)
@@ -49,10 +44,10 @@ namespace AzureLinkboard.Domain.Services.Implementation
                 UserTag tag = new UserTag(userId, tagString);
                 DateOrderedUserTagItem dateOrderedTagItem = new DateOrderedUserTagItem(userId, tagString, url, savedAt);
                 UniqueUserTagItem uniqueTagItem = new UniqueUserTagItem(userId, tagString, url, savedAt);
-                await _userTagsTable.InsertOrReplaceAsync(tag);
+                await _userTagRepository.Save(tag);
                 try
                 {
-                    await _uniqueUserTagItemsTable.InsertAsync(uniqueTagItem);
+                    await _userTagRepository.Save(uniqueTagItem);
                 }
                 catch (UniqueKeyViolation)
                 {
@@ -60,7 +55,7 @@ namespace AzureLinkboard.Domain.Services.Implementation
                 }
                 if (!exists)
                 {
-                    await _dateOrderedUserTagItemsTable.InsertAsync(dateOrderedTagItem);
+                    await _userTagRepository.Save(dateOrderedTagItem);
                 }
             }
         }
@@ -71,14 +66,8 @@ namespace AzureLinkboard.Domain.Services.Implementation
             {
                 continuationToken = continuationToken.Base64Decode();
             }
-            PagedResultSegment<DateOrderedUserTagItem> segment =
-                await
-                    _dateOrderedUserTagItemsTable.PagedQueryAsync(
-                        new Dictionary<string, object>
-                        {
-                            {"PartitionKey", DateOrderedUserTagItem.GetPartitionKey(userId, tag)}
-                        }, pageSize,
-                        continuationToken);
+            PagedResultSegment<DateOrderedUserTagItem> segment = await _userTagRepository.GetForUserAndTag(userId, tag, pageSize, continuationToken);
+            
             if (!segment.Page.Any())
             {
                 return new Page<Api.Model.SavedUrl>
@@ -88,19 +77,7 @@ namespace AzureLinkboard.Domain.Services.Implementation
                 };
             }
 
-            string partitionFilter = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userId);
-            List<string> rowFilters = segment.Page.Select(orderedUrl => TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, orderedUrl.Url.Base64Encode())).ToList();
-
-            string rowFilter = rowFilters[0];
-            for (int index = 1; index < rowFilters.Count; index++)
-            {
-                string subQueryString = rowFilters[index];
-                rowFilter = TableQuery.CombineFilters(rowFilter, TableOperators.Or, subQueryString);
-            }
-
-            string filter = TableQuery.CombineFilters(partitionFilter, TableOperators.And, rowFilter);
-
-            PagedResultSegment<SavedUrl> resultPage = await _repository.PagedQueryAsync(filter, segment.Page.Count(), continuationToken);
+            PagedResultSegment<SavedUrl> resultPage = await _urlRepository.GetByUrls(userId, segment.Page.Select(x => x.Url));
             List<SavedUrl> results = resultPage.Page.OrderByDescending(r => r.SavedAt).ToList();
             return new Page<Api.Model.SavedUrl>
             {

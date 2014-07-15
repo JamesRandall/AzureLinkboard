@@ -4,6 +4,8 @@ using AzureLinkboard.Domain.Helpers.Implementation;
 using AzureLinkboard.Domain.Mappers;
 using AzureLinkboard.Domain.Mappers.Implementation;
 using AzureLinkboard.Domain.Processes;
+using AzureLinkboard.Domain.Repositories;
+using AzureLinkboard.Domain.Repositories.Implementation;
 using AzureLinkboard.Domain.Services;
 using AzureLinkboard.Domain.Services.Implementation;
 using Microsoft.Practices.Unity;
@@ -17,6 +19,10 @@ namespace AzureLinkboard.Domain
             // Helpers
             unityContainer.RegisterType<ITagParser, TagParser>();
             unityContainer.RegisterType<IMapperFactory, MapperFactory>();
+
+            // Repositories
+            unityContainer.RegisterType<IUrlRepository, UrlRepository>();
+            unityContainer.RegisterType<IUserTagRepository, UserTagRepository>();
 
             // Services
             unityContainer.RegisterType<IUrlService, UrlService>();

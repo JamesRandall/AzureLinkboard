@@ -34,6 +34,7 @@
       <Setting name="com.accidentalfish.alert-sender.setting.alert-from" />
       <Setting name="com.accidentalfish.sendgrid.setting.username" />
       <Setting name="com.accidentalfish.sendgrid.setting.password" />
+      <Setting name="com.accidentalfish.azurelinkboard.urlstore.setting.url-users-tablename" />
     </ConfigurationSettings>
   </WorkerRole>
 </ServiceDefinition>

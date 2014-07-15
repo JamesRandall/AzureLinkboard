@@ -8,10 +8,10 @@ using AccidentalFish.ApplicationSupport.Core.Queues;
 using AccidentalFish.ApplicationSupport.Core.Extensions;
 using AzureLinkboard.Api.Model;
 using AzureLinkboard.Domain.Mappers;
+using AzureLinkboard.Domain.Repositories;
 using AzureLinkboard.Domain.Validation;
 using AzureLinkboard.Storage.NoSql;
 using AzureLinkboard.Storage.Queue;
-using Microsoft.WindowsAzure.Storage.Table;
 using NoSqlSavedUrl = AzureLinkboard.Storage.NoSql.SavedUrl;
 using SavedUrl = AzureLinkboard.Api.Model.SavedUrl;
 
@@ -20,20 +20,17 @@ namespace AzureLinkboard.Domain.Services.Implementation
     [ComponentIdentity(ComponentIdentities.UrlStoreFqn)]
     internal class UrlService : AbstractApplicationComponent, IUrlService
     {
+        private readonly IUrlRepository _urlRepository;
         private readonly IMapperFactory _mapperFactory;
-        private readonly IAsynchronousNoSqlRepository<NoSqlSavedUrl> _repository;
-        private readonly IAsynchronousNoSqlRepository<DateOrderedUrl> _dateOrderedRepository; 
         private readonly IAsynchronousQueue<SavedUrlQueueItem> _queue; 
 
         public UrlService(
+            IUrlRepository urlRepository,
             IApplicationResourceFactory applicationResourceFactory,
             IMapperFactory mapperFactory)
         {
-            string dateOrderedTableName = applicationResourceFactory.Setting(ComponentIdentity, "date-ordered-tablename");
-
+            _urlRepository = urlRepository;
             _mapperFactory = mapperFactory;
-            _repository = applicationResourceFactory.GetNoSqlRepository<NoSqlSavedUrl>(ComponentIdentity);
-            _dateOrderedRepository = applicationResourceFactory.GetNoSqlRepository<DateOrderedUrl>(dateOrderedTableName, ComponentIdentity);
             _queue = applicationResourceFactory.GetQueue<SavedUrlQueueItem>(ComponentIdentity);
         }
 
@@ -43,30 +40,17 @@ namespace AzureLinkboard.Domain.Services.Implementation
             {
                 continuationToken = continuationToken.Base64Decode();
             }
-            PagedResultSegment<DateOrderedUrl> segment = await _dateOrderedRepository.PagedQueryAsync(new Dictionary<string, object> {{"PartitionKey", userId}}, pageSize, continuationToken);
-            if (!segment.Page.Any())
+
+            PagedResultSegment<DateOrderedUrl> segment = await _urlRepository.GetDateOrderIndexesForUser(userId, pageSize, continuationToken);
+            if (segment == null)
             {
                 return new Page<SavedUrl>
                 {
-                    ContinuationToken = segment.ContinuationToken == null ? null : segment.ContinuationToken.Base64Encode(),
+                    ContinuationToken = null,
                     Items = new List<SavedUrl>()
                 };
             }
-            
-
-            string partitionFilter = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userId);
-            List<string> rowFilters = segment.Page.Select(orderedUrl => TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, orderedUrl.Url.Base64Encode())).ToList();
-
-            string rowFilter = rowFilters[0];
-            for (int index = 1; index < rowFilters.Count; index++)
-            {
-                string subQueryString = rowFilters[index];
-                rowFilter = TableQuery.CombineFilters(rowFilter, TableOperators.Or, subQueryString);
-            }
-
-            string filter = TableQuery.CombineFilters(partitionFilter, TableOperators.And, rowFilter);
-
-            PagedResultSegment<NoSqlSavedUrl> resultPage = await _repository.PagedQueryAsync(filter, segment.Page.Count(), continuationToken);
+            PagedResultSegment<NoSqlSavedUrl> resultPage = await _urlRepository.GetByUrls(userId, segment.Page.Select(x => x.Url));
             List<NoSqlSavedUrl> results = resultPage.Page.OrderByDescending(r => r.SavedAt).ToList();
             return new Page<SavedUrl>
             {
@@ -94,7 +78,7 @@ namespace AzureLinkboard.Domain.Services.Implementation
 
             try
             {
-                await _repository.InsertAsync(savedUrl);
+                await _urlRepository.Save(savedUrl);
             }
             catch (UniqueKeyViolation)
             {
@@ -105,7 +89,7 @@ namespace AzureLinkboard.Domain.Services.Implementation
             
             await Task.WhenAll(new[]
             {
-                _dateOrderedRepository.InsertAsync(new DateOrderedUrl(userId, savedUrl.SavedAt, savedUrl.Url)),
+                _urlRepository.Save(new DateOrderedUrl(userId, savedUrl.SavedAt, savedUrl.Url)),
                 _queue.EnqueueAsync(queueItem)
             });
 

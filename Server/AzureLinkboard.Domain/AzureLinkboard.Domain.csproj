@@ -135,6 +135,10 @@
     <Compile Include="Mappers\Implementation\SavedUrlMapper.cs" />
     <Compile Include="Processes\PostedUrlProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\Implementation\UserTagRepository.cs" />
+    <Compile Include="Repositories\Implementation\UrlRepository.cs" />
+    <Compile Include="Repositories\IUserTagRepository.cs" />
+    <Compile Include="Repositories\IUrlRepository.cs" />
     <Compile Include="Services\Implementation\TagService.cs" />
     <Compile Include="Services\Implementation\UrlService.cs" />
     <Compile Include="Services\ITagService.cs" />

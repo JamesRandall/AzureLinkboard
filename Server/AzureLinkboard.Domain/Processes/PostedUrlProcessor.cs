@@ -23,6 +23,7 @@ namespace AzureLinkboard.Domain.Processes
         private readonly IAsynchronousQueue<SavedUrlQueueItem> _queue;
         private readonly IAsynchronousQueue<SavedUrlQueueItem> _poisonQueue;
         private readonly IAsynchronousNoSqlRepository<SavedUrl> _savedUrlTable; 
+         
         private readonly ILogger _logger;
 
         public PostedUrlProcessor(IApplicationResourceFactory applicationResourceFactory,
