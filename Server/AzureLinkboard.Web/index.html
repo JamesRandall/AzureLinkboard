@@ -13,13 +13,13 @@
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
-                    <button class="btn btn-success navbar-toggle" ng-click="navbarExpanded = !navbarExpanded">
+                    <button class="btn btn-success navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="glyphicon glyphicon-chevron-down"></span>
                     </button>
                     <a class="navbar-brand" href="#/" ng-hide="authentication.isAuth">Azure Linkboard</a>
                     <a class="navbar-brand" href="#/links" ng-hide="!authentication.isAuth">Azure Linkboard</a>
                 </div>
-                <div class="collapse navbar-collapse" data-collapse="!navbarExpanded">
+                <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li ng-hide="!authentication.isAuth"><a href="" ng-click="showAddLink()">Add Link</a></li>
                         <li ng-hide="!authentication.isAuth"><a href="#/settings">Settings</a></li>
