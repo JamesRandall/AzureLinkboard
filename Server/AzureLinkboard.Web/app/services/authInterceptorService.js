@@ -1,29 +1,23 @@
 ﻿'use strict';
 app.factory('authInterceptorService', ['$q', '$location', 'localStorageService', function ($q, $location, localStorageService) {
+    return {
+        request: function(config) {
 
-    var authInterceptorServiceFactory = {};
+            config.headers = config.headers || {};
 
-    var _request = function (config) {
+            var authData = localStorageService.get('authorizationData');
+            if (authData) {
+                config.headers.Authorization = 'Bearer ' + authData.token;
+            }
 
-        config.headers = config.headers || {};
+            return config;
+        },
 
-        var authData = localStorageService.get('authorizationData');
-        if (authData) {
-            config.headers.Authorization = 'Bearer ' + authData.token;
+        responseError: function(rejection) {
+            if (rejection.status === 401) {
+                $location.path('/login');
+            }
+            return $q.reject(rejection);
         }
-
-        return config;
-    }
-
-    var _responseError = function (rejection) {
-        if (rejection.status === 401) {
-            $location.path('/login');
-        }
-        return $q.reject(rejection);
-    }
-
-    authInterceptorServiceFactory.request = _request;
-    authInterceptorServiceFactory.responseError = _responseError;
-
-    return authInterceptorServiceFactory;
+    };
 }]);
