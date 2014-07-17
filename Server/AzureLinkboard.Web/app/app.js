@@ -4,7 +4,27 @@
 
 var app = angular.module('AzureLinkboardApp', ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'infinite-scroll']);
 
-app.config(function ($routeProvider) {
+var requireAuthentication = function() {
+    return [
+        'authService', '$location', '$q', function(authService, $location, $q) {
+
+            var deferred = $q.defer();
+            deferred.resolve();
+            if (authService.authentication.isAuth) {
+                return deferred.promise;
+            } else {
+                $location.path('/login');
+                return $q.reject('Not authenticated');
+            }
+        }
+    ];
+};
+
+app.run(['authService', function (authService) {
+    authService.fillAuthData();
+}]);
+
+app.config(['$routeProvider', function ($routeProvider) {
 
     $routeProvider.when("/home", {
         controller: "homeController",
@@ -23,7 +43,8 @@ app.config(function ($routeProvider) {
 
     $routeProvider.when("/links", {
         controller: "linkFeedController",
-        templateUrl: "/app/views/linkFeed.html"
+        templateUrl: "/app/views/linkFeed.html",
+        resolve: requireAuthentication()
     });
 
     $routeProvider.when("/settings", {
@@ -33,14 +54,11 @@ app.config(function ($routeProvider) {
 
     $routeProvider.when("/tag/:tag", {
         controller: "tagController",
-        templateUrl: "/app/views/tag.html"
+        templateUrl: "/app/views/tag.html",
+        resolve: requireAuthentication()
     });
 
     $routeProvider.otherwise({ redirectTo: "/home" });
-});
-
-app.run(['authService', function (authService) {
-    authService.fillAuthData();
 }]);
 
 app.config(function ($httpProvider) {
@@ -50,5 +68,3 @@ app.config(function ($httpProvider) {
 app.config(function ($compileProvider) {
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|javascript):/);
 });
-
-
