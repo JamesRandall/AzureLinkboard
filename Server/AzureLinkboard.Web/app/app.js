@@ -2,7 +2,8 @@
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
-var app = angular.module('AzureLinkboardApp', ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'infinite-scroll']);
+var linkboardControllers = angular.module('linkboardControllers', []);
+var app = angular.module('AzureLinkboardApp', ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'infinite-scroll', 'linkboardControllers']);
 
 var requireAuthentication = function() {
     return [

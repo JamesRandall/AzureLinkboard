@@ -73,7 +73,13 @@
     <Content Include="content\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="content\js\angular-route.min.js" />
+    <Content Include="content\js\angular-route.min.js.map" />
     <None Include="Properties\PublishProfiles\AzureLinkboardWeb.pubxml" />
+    <Content Include="content\js\angular-mocks.js" />
+    <Content Include="content\js\angular.min.js" />
+    <Content Include="tests\lib\.DS_Store" />
+    <Content Include="tests\MIT.LICENSE" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -109,6 +115,18 @@
     <Content Include="content\js\loading-bar.js" />
     <Content Include="content\js\ng-infinite-scroll.js" />
     <Content Include="index.html" />
+    <Content Include="tests\lib\jasmine-2.0.0\boot.js" />
+    <Content Include="tests\lib\jasmine-2.0.0\console.js" />
+    <Content Include="tests\lib\jasmine-2.0.0\jasmine-html.js" />
+    <Content Include="tests\lib\jasmine-2.0.0\jasmine.css" />
+    <Content Include="tests\lib\jasmine-2.0.0\jasmine.js" />
+    <Content Include="tests\lib\jasmine-2.0.0\jasmine_favicon.png" />
+    <Content Include="tests\SpecRunner.html" />
+    <Content Include="tests\spec\loginControllerSpec.js" />
+    <Content Include="tests\spec\PlayerSpec.js" />
+    <Content Include="tests\spec\SpecHelper.js" />
+    <Content Include="tests\src\Player.js" />
+    <Content Include="tests\src\Song.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
