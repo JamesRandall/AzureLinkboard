@@ -15,6 +15,9 @@ app.factory('authService', ['$http', '$q', 'localStorageService', 'settingsServi
 
         return $http.post(serviceBase + 'api/account/register', registration, {withCredentials:true}).then(function (response) {
             return response;
+        },
+        function(error) {
+            return error;
         });
 
     };
