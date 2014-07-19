@@ -30,7 +30,8 @@
             scope: {
                 afName: '=',
                 afLabel: '=',
-                ngModel: '='
+                ngModel: '=',
+                afType: '='
             },
         };
         d.link = function(scope, element, attrs, modelController) {
@@ -40,12 +41,14 @@
             scope.$on("inputValid", function () {
                 angular.element(element[0].children[0]).removeClass("has-error");
             });
-            scope.$watch(function () {
-                return modelController.$invalid;
-            }, function () {
-                if (modelController.$invalid) scope.$emit("inputError");
-                else scope.$emit("inputValid");
-            });
+
+            scope.autofocus = attrs.hasOwnProperty('autofocus');
+            if (scope.autofocus) {
+                element[0].removeAttribute('autofocus');
+                //angular.element(element.find("input")[0]).setAttribute('autofocus', 'autofocus');
+                //d.scope.autofocus = true;
+                
+            }
         };
         return d;
     });
