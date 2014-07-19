@@ -57,4 +57,8 @@ describe('loginController tests', function () {
         scope.login();
         expect(scope.message).toBe("Error");
     });
+
+    it("should break the build", function() {
+        expect(false).toBeTruthy();
+    });
 });
