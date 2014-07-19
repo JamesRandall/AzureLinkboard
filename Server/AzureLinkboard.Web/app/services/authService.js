@@ -1,5 +1,5 @@
 ﻿'use strict';
-app.factory('authService', ['$http', '$q', 'localStorageService', 'settingsService', function ($http, $q, localStorageService, settings) {
+app.factory('authService', ['$http', '$q', 'localStorageService', 'settingsService', 'webApiValidationService', function ($http, $q, localStorageService, settings, webApiValidationService) {
 
     var serviceBase = settings.remoteServer;
     var authServiceFactory = {};
@@ -14,10 +14,10 @@ app.factory('authService', ['$http', '$q', 'localStorageService', 'settingsServi
         _logOut();
 
         return $http.post(serviceBase + 'api/account/register', registration, {withCredentials:true}).then(function (response) {
-            return response;
+            return webApiValidationService.handleSuccess(response);
         },
         function(error) {
-            return error;
+            return webApiValidationService.handleError(error);
         });
 
     };

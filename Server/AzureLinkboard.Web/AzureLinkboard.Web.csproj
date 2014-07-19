@@ -61,8 +61,11 @@
     <Content Include="app\controllers\bookmarkletController.js" />
     <Content Include="app\controllers\settingsController.js" />
     <Content Include="app\controllers\tagController.js" />
+    <Content Include="app\directives\validationResultDirective.js" />
     <Content Include="app\services\settingsService.js" />
     <Content Include="app\services\tagService.js" />
+    <Content Include="app\services\webApiValidationService.js" />
+    <Content Include="app\views\afServerValidation.html" />
     <Content Include="app\views\bookmarklet.html" />
     <Content Include="app\views\settings.html" />
     <Content Include="app\views\tag.html" />

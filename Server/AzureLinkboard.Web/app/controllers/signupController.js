@@ -1,9 +1,8 @@
 ﻿'use strict';
 (function(controllers) {
     controllers.controller('signupController', [
-        '$scope', '$location', '$timeout', 'authService', function($scope, $location, $timeout, authService) {
+        '$scope', '$location', '$timeout', 'authService', 'webApiValidationService', function ($scope, $location, $timeout, authService, webApiValidationService) {
 
-            $scope.savedSuccessfully = false;
             $scope.message = "";
 
             $scope.registration = {
@@ -12,20 +11,20 @@
                 confirmPassword: ""
             };
 
-            $scope.signUp = function() {
+            $scope.saveResult = webApiValidationService.defaultModel();
+
+            $scope.signUp = function () {
+                if ($scope.regform.$invalid) {
+                    return;
+                }
+
                 authService.saveRegistration($scope.registration).then(function(response) {
-                        $scope.savedSuccessfully = true;
-                        $scope.message = "You have been registered successfully and will be redicted to login page in 2 seconds.";
+                        $scope.saveResult = response;
+                        $scope.saveResult.message = "You have been registered successfully and will be redicted to login page in 2 seconds.";
                         startTimer();
                     },
                     function(response) {
-                        var errors = [];
-                        for (var key in response.data.modelState) {
-                            for (var i = 0; i < response.data.modelState[key].length; i++) {
-                                errors.push(response.data.modelState[key][i]);
-                            }
-                        }
-                        $scope.message = "Failed to register user due to:" + errors.join(' ');
+                        $scope.saveResult = response;
                     });
             };
             var startTimer = function() {

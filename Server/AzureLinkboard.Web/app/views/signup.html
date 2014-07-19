@@ -6,19 +6,19 @@
             <div class="panel-heading">Register</div>
             <div class="panel-body">
                 <form class="form-horizontal" name="regform">
-                    <div class="form-group" ng-class="{'has-error': regform.email.$invalid}">
+                    <div class="form-group" ng-class="{'has-error': regform.email.$invalid && regform.email.$dirty}">
                         <label for="email" class="control-label col-md-2">Email</label>
                         <div class="col-md-10">
                             <input type="email" name="email" class="form-control" ng-model="registration.email" required autofocus maxlength="256" />
                         </div>
                     </div>
-                    <div class="form-group" ng-class="{'has-error': regform.password.$invalid}">
+                    <div class="form-group" ng-class="{'has-error': regform.password.$invalid && regform.password.$dirty}">
                         <label for="password" class="control-label col-md-2">Password</label>
                         <div class="col-md-10">
                             <input type="password" name="password" class="form-control" ng-model="registration.password" required maxlength="128" />
                         </div>
                     </div>
-                    <div class="form-group" ng-class="{'has-error': regform.confirmPassword.$invalid}">
+                    <div class="form-group" ng-class="{'has-error': regform.confirmPassword.$invalid && regform.confirmPassword.$dirty}">
                         <label for="password" class="control-label col-md-2">Confirm Password</label>
                         <div class="col-md-10">
                             <input type="password" name="confirmPassword" class="form-control" ng-model="registration.confirmPassword" required maxlength="128" />
@@ -29,11 +29,8 @@
                             <div class="pull-right"><button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="signUp()">Submit</button></div>
                         </div>
                     </div>
-                    <div class="row" data-ng-hide="message == ''">
-                        <div data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
-                            {{message}}
-                        </div>
-                    </div>
+                    <af-server-validation key="saveResult"></af-server-validation>
+                    
                 </form>
             </div>
         </div>
