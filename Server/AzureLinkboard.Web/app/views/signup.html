@@ -6,12 +6,15 @@
             <div class="panel-heading">Register</div>
             <div class="panel-body">
                 <form class="form-horizontal" name="regform">
-                    <div class="form-group" ng-class="{'has-error': regform.email.$invalid && regform.email.$dirty}">
+                    <af-text-input af-types="'email''" ng-model="registration.email" af-name="email" af-label="'Email'"></af-text-input>
+
+                    <!--<div class="form-group has-feedback" ng-class="{'has-error': regform.email.$invalid && regform.email.$dirty}">
                         <label for="email" class="control-label col-md-2">Email</label>
                         <div class="col-md-10">
                             <input type="email" name="email" class="form-control" ng-model="registration.email" required autofocus maxlength="256" />
+                            <span class="glyphicon glyphicon-certificate form-control-feedback form-feedback-required"></span>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="form-group" ng-class="{'has-error': regform.password.$invalid && regform.password.$dirty}">
                         <label for="password" class="control-label col-md-2">Password</label>
                         <div class="col-md-10">

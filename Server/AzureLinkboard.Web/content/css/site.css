@@ -8,3 +8,7 @@
 .form-group.has-error .help-block {
   display: block;
 }
+
+.form-feedback-required {
+    color: lightgrey;
+}
