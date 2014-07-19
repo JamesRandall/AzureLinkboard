@@ -1,4 +1,4 @@
-<div style='float: right;'><img src='http://191.233.67.42/app/rest/builds/buildType:(id:AzureLinkboard_Build)/statusIcon' alt='Build Status'/></div>
+<img src='http://191.233.67.42/app/rest/builds/buildType:(id:AzureLinkboard_Build)/statusIcon' alt='Build Status' align="right"/>
 AzureLinkboard
 ==============
 
