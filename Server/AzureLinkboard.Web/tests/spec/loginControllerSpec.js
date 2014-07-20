@@ -7,13 +7,17 @@ describe('loginController tests', function () {
             succeed: true
         };
 
+        mock.defaultModel = function() {
+            return null;
+        };
+
         mock.login = function() {
             return {
                 then: function(r, e) {
                     if (mock.succeed) {
                         r();
                     } else {
-                        e({ error_description: 'Error' });
+                        e({ attemptedSave: true, savedSuccessfully: false });
                     }
                 }
             }
@@ -29,6 +33,7 @@ describe('loginController tests', function () {
             authServices = authServicesMock();
             location = $injector.get('$location');
             scope = $rootScope.$new();
+            scope.loginform = { $invalid: false };
             ctrl = $controller("loginController", {
                 $scope: scope,
                 $location: location,
@@ -52,9 +57,11 @@ describe('loginController tests', function () {
         expect(location.path()).toBe('/links');
     });
 
-    it("failed login should set message", function () {
+    it("failed login should set save result", function () {
         authServices.succeed = false;
+
         scope.login();
-        expect(scope.message).toBe("Error");
+        expect(scope.saveResult.attemptedSave).toBe(true);
+        expect(scope.saveResult.savedSuccessfully).toBe(false);
     });
 });
