@@ -26,7 +26,7 @@
     directives.directive('afTextInput', function() {
         var d = {
             restrict: 'E',
-            templateUrl: '/app/directives/afEmailInput.html',
+            templateUrl: '/app/directives/templates/afTextInput.html',
             scope: {
                 afName: '=',
                 afLabel: '=',
@@ -34,7 +34,7 @@
                 afType: '='
             },
         };
-        d.link = function(scope, element, attrs, modelController) {
+        d.link = function(scope, element, attrs) {
             scope.$on("inputError", function () {
                 angular.element(element[0].children[0]).addClass("has-error");
             });
@@ -42,12 +42,22 @@
                 angular.element(element[0].children[0]).removeClass("has-error");
             });
 
-            scope.autofocus = attrs.hasOwnProperty('autofocus');
-            if (scope.autofocus) {
+            var inputElement = element.find("input")[0];
+
+            if (attrs.hasOwnProperty('autofocus')) {
                 element[0].removeAttribute('autofocus');
-                //angular.element(element.find("input")[0]).setAttribute('autofocus', 'autofocus');
-                //d.scope.autofocus = true;
-                
+                inputElement.setAttribute('autofocus', 'autofocus');
+            }
+
+            scope.afRequired = attrs.hasOwnProperty('required');
+            if (scope.afRequired) {
+                element[0].removeAttribute('required');
+                inputElement.setAttribute('required', 'required');
+            }
+
+            if (attrs.hasOwnProperty('maxlength')) {
+                inputElement.setAttribute('maxlength', attrs.maxlength);
+                element[0].removeAttribute('maxlength');
             }
         };
         return d;

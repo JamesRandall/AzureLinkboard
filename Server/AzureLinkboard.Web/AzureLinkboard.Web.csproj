@@ -61,7 +61,7 @@
     <Content Include="app\controllers\bookmarkletController.js" />
     <Content Include="app\controllers\settingsController.js" />
     <Content Include="app\controllers\tagController.js" />
-    <Content Include="app\directives\afEmailInput.html" />
+    <Content Include="app\directives\templates\afTextInput.html" />
     <Content Include="app\directives\customInputs.js" />
     <Content Include="app\directives\validationResultDirective.js" />
     <Content Include="app\services\settingsService.js" />
