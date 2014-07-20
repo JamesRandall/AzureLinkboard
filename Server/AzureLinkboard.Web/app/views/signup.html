@@ -1,11 +1,11 @@
-﻿
-<div class="row" style="margin-top: 1em;">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <div class="panel panel-default">
-            <div class="panel-heading">Register</div>
-            <div class="panel-body">
-                <form class="form-horizontal" name="regform">
+﻿<form class="form-horizontal" name="regform">
+    <div class="row" style="margin-top: 1em;">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">Register</div>
+                <div class="panel-body">
+
                     <af-text-input af-type="'email'" ng-model="registration.email" af-name="'email'" af-label="'Email'" autofocus required></af-text-input>
                     <af-text-input af-type="'password'" ng-model="registration.password" af-name="'password'" af-label="'Password'" required></af-text-input>
                     <af-text-input af-type="'password'" ng-model="registration.confirmPassword" af-name="'confirmPassword'" af-label="'Confirm Password'" required></af-text-input>
@@ -14,10 +14,12 @@
                             <div class="pull-right"><button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="signUp()">Submit</button></div>
                         </div>
                     </div>
+                </div>
+                <div class="panel-footer" ng-show="saveResult.attemptedSave">
                     <af-server-validation key="saveResult"></af-server-validation>
-                </form>
+                </div>
             </div>
         </div>
+        <div class="col-md-2"></div>
     </div>
-    <div class="col-md-2"></div>
-</div>
+</form>

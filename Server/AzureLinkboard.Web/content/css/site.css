@@ -12,3 +12,11 @@
 .form-feedback-required {
     color: lightgrey;
 }
+
+.server-error {
+    color: rgb(169, 68, 66);
+}
+
+.server-success {
+    color: rgb(60, 118, 61);
+}

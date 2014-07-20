@@ -8,6 +8,8 @@ app.factory('webApiValidationService', ['$q', function ($q) {
                 message: null,
                 isModelError: false,
                 errors: null,
+                errorList: null,
+                data: null,
                 savedSuccessfully: false
             };
         },
@@ -18,9 +20,8 @@ app.factory('webApiValidationService', ['$q', function ($q) {
                 message: response.message,
                 isModelError: false,
                 savedSuccessfully: true,
-                errors: {
-
-                }
+                data: response.data,
+                errors: null
             };
 
         },
@@ -34,14 +35,21 @@ app.factory('webApiValidationService', ['$q', function ($q) {
                     message: response.data.Message,
                     isModelError: true,
                     savedSuccessfully: false,
+                    data: null,
                     errors: {
 
-                    }
+                    },
+                    errorList: []
                 };
+
                 for (var propertyName in response.data.ModelState) {
-                    if (propertyName.indexOf('model.') === 0) {
+                    if (propertyName.indexOf('model.') === 0 || propertyName === '') {
                         var key = propertyName.substring(6);
-                        result.errors[key] = response.data.ModelState[propertyName];
+                        var messages = response.data.ModelState[propertyName];
+                        result.errors[key] = messages;
+                        angular.forEach(messages, function (value) {
+                            result.errorList.push(value);
+                        });
                     }
                 }
             } else {
@@ -52,9 +60,11 @@ app.factory('webApiValidationService', ['$q', function ($q) {
                     message: response.statusText,
                     isModelError: false,
                     savedSuccessfully: false,
+                    data: null,
                     errors: {
-
-                    }
+                        "": "Unexpected error: " + response.statusText
+                    },
+                    errorList: ["Unexpected error: " + response.statusText]
                 };
             }
             return $q.reject(result);

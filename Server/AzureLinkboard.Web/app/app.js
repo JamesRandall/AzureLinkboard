@@ -3,7 +3,13 @@
 };
 
 var linkboardControllers = angular.module('linkboardControllers', []);
-var app = angular.module('AzureLinkboardApp', ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'infinite-scroll', 'afCustomInputs', 'linkboardControllers', 'afValidationDirective']);
+var app = angular.module('AzureLinkboardApp', ['ngRoute',
+    'LocalStorageModule',
+    'angular-loading-bar',
+    'infinite-scroll',
+    'afCustomInputs',
+    'linkboardControllers',
+    'afServerValidation']);
 
 var requireAuthentication = function() {
     return [
