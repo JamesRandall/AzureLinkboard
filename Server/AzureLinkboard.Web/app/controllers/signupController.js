@@ -1,7 +1,7 @@
 ﻿'use strict';
 (function(controllers) {
     controllers.controller('signupController', [
-        '$scope', '$location', '$timeout', 'authService', 'webApiValidationService', function ($scope, $location, $timeout, authService, webApiValidationService) {
+        '$scope', '$location', '$timeout', 'authService', function ($scope, $location, $timeout, authService) {
 
             $scope.message = "";
 
@@ -11,7 +11,7 @@
                 confirmPassword: ""
             };
 
-            $scope.saveResult = webApiValidationService.defaultModel();
+            $scope.saveResult = authService.defaultModel();
 
             $scope.signUp = function () {
                 if ($scope.regform.$invalid) {
