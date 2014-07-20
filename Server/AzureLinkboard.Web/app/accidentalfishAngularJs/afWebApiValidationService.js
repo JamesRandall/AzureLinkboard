@@ -1,5 +1,5 @@
 ﻿'use strict';
-app.factory('webApiValidationService', ['$q', function ($q) {
+app.factory('afWebApiValidationService', ['$q', function ($q) {
     return {
         defaultModel: function() {
             return {

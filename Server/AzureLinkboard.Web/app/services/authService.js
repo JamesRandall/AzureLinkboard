@@ -1,5 +1,5 @@
 ﻿'use strict';
-app.factory('authService', ['$http', '$q', 'localStorageService', 'settingsService', 'webApiValidationService', function ($http, $q, localStorageService, settings, webApiValidationService) {
+app.factory('authService', ['$http', '$q', 'localStorageService', 'settingsService', 'afWebApiValidationService', function ($http, $q, localStorageService, settings, webApiValidationService) {
 
     var serviceBase = settings.remoteServer;
     var authServiceFactory = {

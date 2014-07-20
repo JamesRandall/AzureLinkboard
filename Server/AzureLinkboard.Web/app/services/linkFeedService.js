@@ -1,5 +1,5 @@
 ﻿'use strict';
-app.factory('linkFeedService', ['$http', '$q', 'settingsService', 'webApiValidationService', function ($http, $q, settings, webApiValidationService) {
+app.factory('linkFeedService', ['$http', '$q', 'settingsService', 'afWebApiValidationService', function ($http, $q, settings, webApiValidationService) {
 
     var serviceBase = settings.remoteServer;
 
