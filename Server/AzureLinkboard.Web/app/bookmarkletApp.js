@@ -3,7 +3,13 @@
 };
 
 var linkboardControllers = angular.module('bookmarkletControllers', []);
-var app = angular.module('BookmarkletApp', ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'bookmarkletControllers']);
+var app = angular.module('BookmarkletApp', [
+    'ngRoute',
+    'LocalStorageModule',
+    'angular-loading-bar',
+    'bookmarkletControllers',
+    'afCustomInputs',
+    'afServerValidation']);
 
 app.run(['authService', function (authService) {
     authService.fillAuthData();

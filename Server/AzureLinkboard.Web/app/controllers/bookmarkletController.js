@@ -9,16 +9,25 @@
                 "Tags": ""
             };
 
+            $scope.saveResult = linkFeedService.defaultModel();
+
             $scope.cancel = function() {
                 $window.close();
             };
 
-            $scope.saveLink = function() {
-                linkFeedService.saveLink($scope.newLink).then(function(results) {
+            $scope.saveLink = function () {
+                if ($scope.linkform.$invalid) {
+                    return;
+                }
+                linkFeedService.saveLink($scope.newLink).then(function (results) {
+                    $scope.saveResult = results;
                     $scope.$broadcast('newLink', results.data);
-                    $('#addLinkModal').modal('hide');
                     $window.close();
+                },
+                function (error) {
+                    $scope.saveResult = error;
                 });
+
             };
         }
     ]);

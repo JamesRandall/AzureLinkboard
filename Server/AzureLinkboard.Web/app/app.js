@@ -7,8 +7,8 @@ var app = angular.module('AzureLinkboardApp', ['ngRoute',
     'LocalStorageModule',
     'angular-loading-bar',
     'infinite-scroll',
-    'afCustomInputs',
     'linkboardControllers',
+    'afCustomInputs',
     'afServerValidation']);
 
 var requireAuthentication = function() {
