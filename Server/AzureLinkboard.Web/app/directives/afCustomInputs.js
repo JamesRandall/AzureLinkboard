@@ -1,5 +1,30 @@
 ﻿'use strict';
 (function (directives) {
+    function applyStandardAttributes(inputElement, scope, element, attrs) {
+        scope.$on("inputError", function () {
+            angular.element(element[0].children[0]).addClass("has-error");
+        });
+        scope.$on("inputValid", function () {
+            angular.element(element[0].children[0]).removeClass("has-error");
+        });
+
+        if (attrs.hasOwnProperty('autofocus')) {
+            element[0].removeAttribute('autofocus');
+            inputElement.setAttribute('autofocus', 'autofocus');
+        }
+
+        scope.afRequired = attrs.hasOwnProperty('required');
+        if (scope.afRequired) {
+            element[0].removeAttribute('required');
+            inputElement.setAttribute('required', 'required');
+        }
+
+        if (attrs.hasOwnProperty('maxlength')) {
+            inputElement.setAttribute('maxlength', attrs.maxlength);
+            element[0].removeAttribute('maxlength');
+        }
+    }
+
     directives.directive("input", function () {
         return {
             restrict: "E",
@@ -34,30 +59,29 @@
                 afType: '='
             },
         };
-        d.link = function(scope, element, attrs) {
-            scope.$on("inputError", function () {
-                angular.element(element[0].children[0]).addClass("has-error");
-            });
-            scope.$on("inputValid", function () {
-                angular.element(element[0].children[0]).removeClass("has-error");
-            });
-
+        d.link = function (scope, element, attrs) {
             var inputElement = element.find("input")[0];
+            applyStandardAttributes(inputElement, scope, element, attrs);
+        };
+        return d;
+    });
 
-            if (attrs.hasOwnProperty('autofocus')) {
-                element[0].removeAttribute('autofocus');
-                inputElement.setAttribute('autofocus', 'autofocus');
-            }
-
-            scope.afRequired = attrs.hasOwnProperty('required');
-            if (scope.afRequired) {
-                element[0].removeAttribute('required');
-                inputElement.setAttribute('required', 'required');
-            }
-
-            if (attrs.hasOwnProperty('maxlength')) {
-                inputElement.setAttribute('maxlength', attrs.maxlength);
-                element[0].removeAttribute('maxlength');
+    directives.directive('afTextArea', function() {
+        var d = {
+            restrict: 'E',
+            templateUrl: '/app/directives/templates/afTextArea.html',
+            scope: {
+                afName: '=',
+                afLabel: '=',
+                ngModel: '='
+            },
+        };
+        d.link = function (scope, element, attrs) {
+            var inputElement = element.find("textarea")[0];
+            applyStandardAttributes(inputElement, scope, element, attrs);
+            if (attrs.hasOwnProperty('rows')) {
+                element[0].removeAttribute('rows');
+                inputElement.setAttribute('rows', attrs.rows);
             }
         };
         return d;
