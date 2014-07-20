@@ -67,7 +67,7 @@ app.factory('webApiValidationService', ['$q', function ($q) {
                     errorList: ["Unexpected error: " + response.statusText]
                 };
             }
-            return $q.reject(result);
+            return result;
         }
     };
 }]);

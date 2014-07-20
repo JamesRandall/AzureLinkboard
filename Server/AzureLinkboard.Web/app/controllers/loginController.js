@@ -6,13 +6,17 @@
                 userName: "",
                 password: ""
             };
+            $scope.saveResult = authService.defaultModel();
             $scope.message = "";
-            $scope.login = function() {
+            $scope.login = function () {
+                if ($scope.loginform.$invalid) {
+                    return;
+                }
                 authService.login($scope.loginData).then(function(response) {
                         $location.path('/links');
                     },
                     function(error) {
-                        $scope.message = error.error_description;
+                        $scope.saveResult = error;
                     });
             };
         }

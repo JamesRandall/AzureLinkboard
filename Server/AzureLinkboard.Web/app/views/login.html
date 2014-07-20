@@ -5,18 +5,8 @@
             <div class="panel-heading">Login</div>
             <div class="panel-body">
                 <form class="form-horizontal" name="loginform">
-                    <div class="form-group" ng-class="{'has-error': loginform.email.$invalid}">
-                        <label for="email" class="control-label col-md-2">Email</label>
-                        <div class="col-md-10">
-                            <input type="email" name="email" class="form-control" ng-model="loginData.userName" required autofocus maxlength="256" />
-                        </div>
-                    </div>
-                    <div class="form-group" ng-class="{'has-error': loginform.password.$invalid}">
-                        <label for="password" class="control-label col-md-2">Password</label>
-                        <div class="col-md-10">
-                            <input type="password" name="password" class="form-control" ng-model="loginData.password" required maxlength="128" />
-                        </div>
-                    </div>
+                    <af-text-input af-type="'email'" ng-model="loginData.userName" af-name="'email'" af-label="'Email'" autofocus required></af-text-input>
+                    <af-text-input af-type="'password'" ng-model="loginData.password" af-name="'password'" af-label="'Password'" required></af-text-input>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="pull-right"><button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="login()">Submit</button></div>
@@ -24,7 +14,7 @@
                     </div>
                 </form>
             </div>
-            <div class="panel-footer alert-danger" data-ng-hide="message == ''">Unrecognised username and password combination.</div>
+            <div class="panel-footer alert-danger" data-ng-show="saveResult.attemptedSave && !saveResult.savedSuccessfully">Unrecognised username and password combination.</div>
         </div>
     </div>
 </div>

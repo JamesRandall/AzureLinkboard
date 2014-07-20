@@ -12,14 +12,14 @@ app.factory('authService', ['$http', '$q', 'localStorageService', 'settingsServi
     var _saveRegistration = function (registration) {
 
         _logOut();
-
-        return $http.post(serviceBase + 'api/account/register', registration, {withCredentials:true}).then(function (response) {
-            return webApiValidationService.handleSuccess(response);
+        var deferred = $q.defer();
+        $http.post(serviceBase + 'api/account/register', registration, { withCredentials: true }).then(function (response) {
+            deferred.resolve(webApiValidationService.handleSuccess(response));
         },
         function(error) {
-            return webApiValidationService.handleError(error);
+            deferred.reject(webApiValidationService.handleError(error));
         });
-
+        return deferred.promise;
     };
 
     var _login = function (loginData) {
@@ -35,11 +35,12 @@ app.factory('authService', ['$http', '$q', 'localStorageService', 'settingsServi
             _authentication.isAuth = true;
             _authentication.userName = loginData.userName;
 
-            deferred.resolve(response);
+            deferred.resolve(webApiValidationService.handleSuccess(response));
 
         }).error(function (err, status) {
             _logOut();
-            deferred.reject(err);
+            deferred.reject(webApiValidationService.handleError(err));
+            //deferred.reject(err);
         });
 
         return deferred.promise;
@@ -70,6 +71,7 @@ app.factory('authService', ['$http', '$q', 'localStorageService', 'settingsServi
     authServiceFactory.logOut = _logOut;
     authServiceFactory.fillAuthData = _fillAuthData;
     authServiceFactory.authentication = _authentication;
+    authServiceFactory.defaultModel = webApiValidationService.defaultModel;
 
     return authServiceFactory;
 }]);
