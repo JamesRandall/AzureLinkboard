@@ -57,6 +57,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\accidentalfishAngularJs\templates\afSubmitButton.html" />
     <Content Include="app\bookmarkletApp.js" />
     <Content Include="app\controllers\bookmarkletController.js" />
     <Content Include="app\controllers\settingsController.js" />

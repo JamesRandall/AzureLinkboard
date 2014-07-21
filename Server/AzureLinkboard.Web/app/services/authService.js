@@ -49,6 +49,16 @@ app.factory('authService', ['$http', '$q', 'localStorageService', 'settingsServi
         });
         return deferred.promise;
     };
+    authServiceFactory.changePassword = function(passwordData) {
+        var deferred = $q.defer();
+        $http.post(serviceBase + 'api/account/changepassword', passwordData, { withCredentials: true }).then(function (response) {
+            deferred.resolve(webApiValidationService.handleSuccess(response));
+        },
+        function (error) {
+            deferred.reject(webApiValidationService.handleError(error));
+        });
+        return deferred.promise;
+    }
 
     authServiceFactory.defaultModel = webApiValidationService.defaultModel;
 

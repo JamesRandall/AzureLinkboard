@@ -1,17 +1,25 @@
-﻿<div class="panel panel-default panel-spaced">
-    <div class="panel-heading">Bookmarklets</div>
-    <div class="panel-body">
-        <p>Drag the button below to your bookmarks bar to create a bookmarklet.</p>
-        <a ng-href="{{bookmarklet}}" class="btn btn-default">Save Bookmark</a>
+﻿<div class="row">
+    <div class="panel panel-default panel-spaced">
+        <div class="panel-heading">Bookmarklets</div>
+        <div class="panel-body">
+            <p>Drag the button below to your bookmarks bar to create a bookmarklet.</p>
+            <a ng-href="{{bookmarklet}}" class="btn btn-default">Save Bookmark</a>
+        </div>
     </div>
 </div>
-<!--<div class="panel panel-default">
-    <div class="panel-heading">View Settings</div>
-    <div class="panel-body">
-        <div class="form-group">
-            <label for="pagesize">Page size</label>
-            <input type="text" id="pagesize" class="form-control" ng-model="pageSize" />
+<form class="form-horizontal" name="changePasswordForm">
+    <div class="row">
+        <div class="panel panel-default panel-spaced">
+            <div class="panel-heading">Change Password</div>
+            <div class="panel-body">
+                <af-text-input af-type="'password'" ng-model="changePassword.oldPassword" af-name="'oldPassword'" af-label="'Current Password'" required></af-text-input>
+                <af-text-input af-type="'password'" ng-model="changePassword.newPassword" af-name="'newPassword'" af-label="'Password'" required></af-text-input>
+                <af-text-input af-type="'password'" ng-model="changePassword.confirmPassword" af-name="'password'" af-label="'Confirm Password'" required></af-text-input>
+                <af-submit-button ng-click="doChangePassword()"></af-submit-button>
+            </div>
+            <div class="panel-footer" ng-show="saveResult.attemptedSave">
+                <af-server-validation key="saveResult"></af-server-validation>
+            </div>
         </div>
-        <div class="pull-right"><button class="btn btn-default" ng-click="saveViewSettings()">Save</button></div>
     </div>
-</div>-->
+</form>
